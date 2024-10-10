@@ -11,6 +11,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final AuthMethods _authMethods = AuthMethods();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           const Text(
             "Start or join a meeting",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
@@ -30,15 +31,14 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           CustomButton(
             text: "Google Sign In",
-            onPressed: () async{
+            onPressed: () async {
               bool res = await _authMethods.signInWithGoogle(context);
               if (res) {
                 Navigator.pushNamed(context, "/home");
               }
             },
           ),
-
-      ],
+        ],
       ),
     );
   }

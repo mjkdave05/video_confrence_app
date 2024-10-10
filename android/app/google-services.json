@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "233308585039",
-    "project_id": "video-conferencing-app-9b4a3",
-    "storage_bucket": "video-conferencing-app-9b4a3.appspot.com"
+    "project_number": "54645768090",
+    "project_id": "flutter-video-conference-d6300",
+    "storage_bucket": "flutter-video-conference-d6300.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:233308585039:android:13b866c07a424a788dfe3a",
+        "mobilesdk_app_id": "1:54645768090:android:3a7fba04a83968db4b8423",
         "android_client_info": {
-          "package_name": "com.example.video_confrence_app"
+          "package_name": "com.conference.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "233308585039-e0kulbaodp7hfj2hacapboc9d5bqefpj.apps.googleusercontent.com",
+          "client_id": "54645768090-l543b7ljonsadk227lgg5s1skut94ue0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDCo22yCbLek5RxmA89oHgdazUfXM2SDSI"
+          "current_key": "AIzaSyAOoXWgngI01N37P1MYHjZWxzvr7Sty31Y"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "233308585039-e0kulbaodp7hfj2hacapboc9d5bqefpj.apps.googleusercontent.com",
+              "client_id": "54645768090-l543b7ljonsadk227lgg5s1skut94ue0.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "54645768090-ser0f5kkc85lvsntb5qdpcmnjpdavrg2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.videoConfrenceApp"
+              }
             }
           ]
         }

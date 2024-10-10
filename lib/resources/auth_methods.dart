@@ -16,19 +16,30 @@ class AuthMethods {
       // Initiate Google Sign-In process
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
+      // Check if the user canceled the sign-in process
+      if (googleUser == null) {
+        return res; // User canceled sign-in, return false
+      }
+
       // Retrieve authentication details from the Google account
       final GoogleSignInAuthentication? googleAuth =
-      await googleUser?.authentication;
+          await googleUser.authentication;
+
+      // Check if googleAuth is null
+      if (googleAuth == null) {
+        showSnackBar(context, 'Google Authentication failed.');
+        return res;
+      }
 
       // Create Firebase OAuth credentials using Google authentication details
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
 
       // Sign in to Firebase with the generated credential
       UserCredential userCredential =
-      await _auth.signInWithCredential(credential);
+          await _auth.signInWithCredential(credential);
 
       User? user = userCredential.user;
 
@@ -44,14 +55,9 @@ class AuthMethods {
         res = true;
       }
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!);
+      showSnackBar(context, e.message ?? "An error occurred during sign-in");
       res = false;
     }
     return res;
   }
 }
-
-
-
-
-
