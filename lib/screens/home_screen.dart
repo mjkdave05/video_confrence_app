@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../utils/colors.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -10,6 +12,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   User? _user;
+  int _page = 0;
+
+  onPageChanged(int page) {
+    setState(() {
+      _page = page;
+    });
+  }
 
   @override
   void initState() {
@@ -28,39 +37,46 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // If user is signed in, display the username and profile photo
-        title: _user != null
-            ? Row(
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(_user!.photoURL ??
-                        'https://via.placeholder.com/150'), // Placeholder image if no profile picture
-                  ),
-                  const SizedBox(width: 10), // Space between image and username
-                  Text(
-                    _user!.displayName ?? 'Guest',
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                ],
-              )
-            : const Text('Home Screen'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.pushReplacementNamed(context, "/login");
-            },
-          ),
-        ],
-      ),
-      body: const Center(
-        child: Text(
-          'Welcome to the Home Screen!',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
+      bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: footerColor,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey,
+          onTap: onPageChanged,
+          currentIndex: _page,
+          type: BottomNavigationBarType.fixed,
+          unselectedFontSize: 14,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.comment_bank,
+              ),
+              label: 'Meet & Chat',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.lock_clock,
+              ),
+              label: 'Meetings',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person_outline,
+              ),
+              label: 'Contacts',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings_outlined,
+              ),
+              label: 'Settings',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.comment_bank,
+              ),
+              label: 'Meet & Chat',
+            ),
+          ]),
     );
   }
 }
