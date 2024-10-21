@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     top: 8.0), // Add space at the top of the icon
                 child: Icon(Icons.lock_clock),
               ),
-              label: 'Meetings',
+              label: 'History',
             ),
             BottomNavigationBarItem(
               icon: Padding(
