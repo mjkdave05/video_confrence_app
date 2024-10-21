@@ -1,11 +1,24 @@
 // server.js
+
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const cors = require('cors');
+require('dotenv').config(); // Initialize dotenv
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+
+// Enable CORS
+app.use(cors());
+
+// Initialize Socket.IO
+const io = new Server(server, {
+  cors: {
+    origin: "*", // Allow all origins for simplicity (you can specify specific origins)
+    methods: ["GET", "POST"]
+  }
+});
 
 // Handle connection events
 io.on('connection', (socket) => {
