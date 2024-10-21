@@ -57,5 +57,11 @@
 		</array>
 	</dict>
 </array>
+
+
+<key>Privacy - Microphone Usage Description</key>	
+<string>For the purpose of using the microphone. For example, for a call or live interactive streaming session.</string>
+<key>Privacy - Camera Usage Description</key>	
+<string>For the purpose of using the camera. For example, for a call or live interactive streaming session.</string>
 </dict>
 </plist>

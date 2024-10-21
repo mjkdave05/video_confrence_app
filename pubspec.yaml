@@ -21,6 +21,12 @@ dev_dependencies:
   firebase_core: ^3.6.0
   firebase_auth: ^5.3.1
   google_sign_in: ^6.2.1
+  agora_rtc_engine: ^6.3.2
+  permission_handler: ^11.3.1
+  provider: ^6.1.2
+  intl: ^0.19.0
+  flutter_local_notifications: ^17.2.3
+  location: ^7.0.1
 
  
   # rules and activating additional ones.

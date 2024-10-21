@@ -1,30 +1,33 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:video_confrence_app/resources/auth_methods.dart';
 import 'package:video_confrence_app/screens/home_screen.dart';
 import 'package:video_confrence_app/screens/login_screen.dart';
+import 'package:video_confrence_app/screens/onboarding.dart'; // Import your OnboardingScreen
+import 'package:video_confrence_app/screens/video_call_screen.dart';
 import 'package:video_confrence_app/utils/colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Initialize Firebase before running the app
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Conference App',
+      title: 'Zoom Clone',
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: backgroundColor,
       ),
       routes: {
-        "/login": (context) => const LoginScreen(),
-        "/home": (context) => const HomeScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/video-call': (context) => const VideoCallScreen(),
       },
       home: StreamBuilder(
         stream: AuthMethods().authChanges,
@@ -36,12 +39,11 @@ class MyApp extends StatelessWidget {
           }
 
           if (snapshot.hasData) {
-            // If the user is authenticated, navigate to HomeScreen
             return const HomeScreen();
           }
 
-          // If no user is authenticated, show the LoginScreen
-          return const LoginScreen();
+          // OnboardingScreen if the user is not authenticated
+          return OnboardingScreen();
         },
       ),
     );

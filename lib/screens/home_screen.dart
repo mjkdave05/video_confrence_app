@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:video_confrence_app/widgets/home_meeting_button.dart';
-
+import 'package:video_confrence_app/screens/history_meeting_screen.dart';
+import 'package:video_confrence_app/screens/meeting_screen.dart';
+import 'package:video_confrence_app/screens/login_screen.dart'; // Import the LoginScreen to navigate after logout
+import 'package:video_confrence_app/screens/onboarding.dart'; // Import the OnboardingScreen
+import 'package:video_confrence_app/screens/settings_screen.dart';
 import '../utils/colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,12 +17,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? _user;
   int _page = 0;
-
-  onPageChanged(int page) {
-    setState(() {
-      _page = page;
-    });
-  }
 
   @override
   void initState() {
@@ -35,56 +32,65 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void onPageChanged(int page) {
+    setState(() {
+      _page = page;
+    });
+  }
+
+  // Method to log out the user
+  Future<void> _logout() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              OnboardingScreen()), // Navigate to Onboarding after logout
+      (Route<dynamic> route) => false, // Remove all routes from the stack
+    );
+  }
+
+  List<Widget> pages = [
+    MeetingScreen(),
+    const HistoryMeetingScreen(),
+    const Text('Contacts'),
+    const SettingsScreen(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: backgroundColor,
-        elevation: 0,
-        title: const Text('Meet & Chat'),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        appBar: AppBar(
+          backgroundColor: backgroundColor,
+          elevation: 0,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              HomeMeetingButton(
-                onPressed: () {},
-                text: 'New Meeting',
-                icon: Icons.videocam,
+              CircleAvatar(
+                backgroundImage: _user?.photoURL != null
+                    ? NetworkImage(_user!.photoURL!)
+                    : const AssetImage('assets/default_avatar.png')
+                        as ImageProvider, // Default avatar if no photoURL
+                radius: 20,
               ),
-              HomeMeetingButton(
-                onPressed: () {},
-                text: 'Join Meeting',
-                icon: Icons.add_box_rounded,
-              ),
-              HomeMeetingButton(
-                onPressed: () {},
-                text: 'Schedule',
-                icon: Icons.calendar_today,
-              ),
-              HomeMeetingButton(
-                onPressed: () {},
-                text: 'Share Screen',
-                icon: Icons.arrow_upward_rounded,
+              const SizedBox(width: 10),
+              Text(
+                _user?.displayName ?? 'User', // Display name or 'User' if null
+                style: const TextStyle(fontSize: 18),
               ),
             ],
           ),
-          const Expanded(
-            child: Center(
-              child: Text(
-                'Create/Join Meetings with just a click',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
+          centerTitle: false,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: _logout, // Call the logout method
+              tooltip: 'Logout',
             ),
-          )
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
+          ],
+        ),
+        body: pages[_page],
+        bottomNavigationBar: BottomNavigationBar(
           backgroundColor: footerColor,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.grey,
@@ -92,38 +98,47 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: _page,
           type: BottomNavigationBarType.fixed,
           unselectedFontSize: 14,
+          selectedFontSize: 14,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.comment_bank,
+              icon: Padding(
+                padding: EdgeInsets.only(
+                    top: 8.0), // Add space at the top of the icon
+                child: Icon(Icons.comment_bank),
               ),
-              label: 'Meet & Chat',
+              label: 'conference',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.lock_clock,
+              icon: Padding(
+                padding: EdgeInsets.only(
+                    top: 8.0), // Add space at the top of the icon
+                child: Icon(Icons.lock_clock),
               ),
               label: 'Meetings',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person_outline,
+              icon: Padding(
+                padding: EdgeInsets.only(
+                    top: 8.0), // Add space at the top of the icon
+                child: Icon(Icons.person_outline),
               ),
               label: 'Contacts',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings_outlined,
+              icon: Padding(
+                padding: EdgeInsets.only(
+                    top: 8.0), // Add space at the top of the icon
+                child: Icon(Icons.settings_outlined),
               ),
               label: 'Settings',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.comment_bank,
-              ),
-              label: 'Meet & Chat',
-            ),
-          ]),
-    );
+          ],
+          showUnselectedLabels: true,
+          selectedIconTheme: IconThemeData(size: 30),
+          unselectedIconTheme: IconThemeData(size: 24),
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+          unselectedLabelStyle: TextStyle(fontSize: 12),
+          elevation: 8,
+        ));
   }
 }

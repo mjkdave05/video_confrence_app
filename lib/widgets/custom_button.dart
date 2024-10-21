@@ -15,13 +15,7 @@ class CustomButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(9.0),
       child: ElevatedButton(
-          onPressed: onPressed,
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 17,
-            ),
-          ),
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: buttonColor,
           minimumSize: const Size(
@@ -31,6 +25,12 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
             side: const BorderSide(color: buttonColor),
+          ),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 17,
           ),
         ),
       ),
