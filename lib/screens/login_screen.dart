@@ -36,13 +36,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 30), // Space between title and image
+              const SizedBox(height: 30),
 
               // Circular image with glass effect
               ClipOval(
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(150), // Circular border
+                    borderRadius: BorderRadius.circular(150),
                     border: Border.all(
                         color: Colors.white.withOpacity(0.5), width: 4),
                     gradient: LinearGradient(
@@ -59,8 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         const EdgeInsets.all(8.0), // Padding around the image
                     child: Image.asset(
                       'assets/images/meeting.png',
-                      height: 200, // Smaller height for the image
-                      fit: BoxFit.cover, // Cover the circular area
+                      height: 200,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
