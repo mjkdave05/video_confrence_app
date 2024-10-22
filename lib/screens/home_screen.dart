@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:video_confrence_app/screens/contacts_screen.dart';
 import 'package:video_confrence_app/screens/history_meeting_screen.dart';
 import 'package:video_confrence_app/screens/meeting_screen.dart';
-import 'package:video_confrence_app/screens/login_screen.dart'; // Import the LoginScreen to navigate after logout
 import 'package:video_confrence_app/screens/onboarding.dart'; // Import the OnboardingScreen
 import 'package:video_confrence_app/screens/settings_screen.dart';
 import '../utils/colors.dart';
@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Widget> pages = [
     MeetingScreen(),
     const HistoryMeetingScreen(),
-    const Text('Contacts'),
+    const ContactsScreen(),
     const SettingsScreen(),
   ];
 

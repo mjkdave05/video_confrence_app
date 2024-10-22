@@ -1,134 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:video_confrence_app/resources/firebase_chat_methods.dart'; // Import your FirebaseChatMethods
+import 'package:video_confrence_app/resources/firebase_chat_methods.dart';
+import 'package:video_confrence_app/services/chat_ui.dart';
 
 class ChatScreen extends StatefulWidget {
+  const ChatScreen({Key? key}) : super(key: key);
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final FirebaseChatMethods _chatMethods =
-      FirebaseChatMethods(); // Initialize FirebaseChatMethods
+  final FirebaseChatMethods _firebaseChatMethods = FirebaseChatMethods();
   final TextEditingController _messageController = TextEditingController();
-  List<Map<String, dynamic>> messages = [];
+  List<Map<String, dynamic>> _messages = [];
 
   @override
   void initState() {
     super.initState();
+    _loadCachedMessages();
+    _firebaseChatMethods.listenForMessages(_onMessageReceived);
+  }
 
-    // Load cached messages
-    _chatMethods.loadCachedMessages().then((cachedMessages) {
-      setState(() {
-        messages = cachedMessages;
-      });
-    });
-
-    // Listen for new messages
-    _chatMethods.listenForMessages((messageData) {
-      setState(() {
-        messages.add(messageData);
-      });
+  void _loadCachedMessages() async {
+    List<Map<String, dynamic>> cachedMessages =
+        await _firebaseChatMethods.loadCachedMessages();
+    setState(() {
+      _messages = cachedMessages;
     });
   }
 
-  // Send message function
+  void _onMessageReceived(Map<String, dynamic> message) {
+    setState(() {
+      _messages.add(message);
+    });
+  }
+
   void _sendMessage() {
     String message = _messageController.text.trim();
     if (message.isNotEmpty) {
-      _chatMethods.sendMessage(message);
-      setState(() {
-        messages.add({'message': message, 'sender': 'user1'});
-      });
+      _firebaseChatMethods.sendMessage(message);
       _messageController.clear();
+      _onMessageReceived(
+          {'message': message, 'sender': 'me'}); // Show sent message
     }
   }
 
   @override
   void dispose() {
-    _chatMethods.disconnect(); // Disconnect socket when leaving screen
+    _firebaseChatMethods.disconnect();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-        centerTitle: true,
-        backgroundColor: Colors.teal, // Sleek app bar design
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                return _buildMessageTile(
-                    messages[index]['message'], messages[index]['sender']);
-              },
-            ),
-          ),
-          _buildMessageInput(),
-        ],
-      ),
-    );
-  }
-
-  // Message Tile Widget
-  Widget _buildMessageTile(String message, String sender) {
-    bool isMe =
-        sender == 'user1'; // Check if the message is sent by the current user
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        decoration: BoxDecoration(
-          color: isMe ? Colors.tealAccent : Colors.grey[300],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          message,
-          style: TextStyle(
-            fontSize: 16,
-            color: isMe ? Colors.black : Colors.black87,
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Message Input Widget
-  Widget _buildMessageInput() {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _messageController,
-              decoration: InputDecoration(
-                hintText: 'Enter your message...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              ),
-            ),
-          ),
-          SizedBox(width: 10),
-          CircleAvatar(
-            backgroundColor: Colors.teal,
-            radius: 25,
-            child: IconButton(
-              icon: Icon(Icons.send, color: Colors.white),
-              onPressed: _sendMessage,
-            ),
-          ),
-        ],
-      ),
+    return ChatUI(
+      messages: _messages,
+      messageController: _messageController,
+      onSendMessage: _sendMessage,
     );
   }
 }

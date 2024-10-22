@@ -4,10 +4,13 @@ import 'package:video_confrence_app/utils/colors.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final Color? textColor;
+
   const CustomButton({
     super.key,
     required this.text,
     required this.onPressed,
+    this.textColor, // Optional text color
   });
 
   @override
@@ -24,13 +27,16 @@ class CustomButton extends StatelessWidget {
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
-            side: const BorderSide(color: buttonColor),
+            side: BorderSide(color: buttonColor), // Adjusted for border color
           ),
+          elevation: 5, // Added elevation for a modern look
         ),
         child: Text(
           text,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 17,
+            color: textColor ??
+                Colors.white, // Use provided text color or default to white
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:video_confrence_app/resources/auth_methods.dart';
+import 'package:video_confrence_app/screens/chat_screen.dart';
 import 'package:video_confrence_app/screens/home_screen.dart';
 import 'package:video_confrence_app/screens/login_screen.dart';
 import 'package:video_confrence_app/screens/onboarding.dart'; // Import your OnboardingScreen
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
         '/video-call': (context) => const VideoCallScreen(),
+        '/chat': (context) => ChatScreen(),
       },
       home: StreamBuilder(
         stream: AuthMethods().authChanges,

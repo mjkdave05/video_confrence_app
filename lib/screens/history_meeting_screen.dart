@@ -11,8 +11,8 @@ class HistoryMeetingScreen extends StatefulWidget {
 
 class _HistoryMeetingScreenState extends State<HistoryMeetingScreen> {
   String _searchQuery = '';
-  String?
-      _selectedMeetingDetails; // To store the details of the selected meeting
+  // String?
+  //     _selectedMeetingDetails; // To store the details of the selected meeting
 
   @override
   Widget build(BuildContext context) {

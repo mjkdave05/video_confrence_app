@@ -24,6 +24,10 @@ class MeetingScreen extends StatelessWidget {
     Navigator.pushNamed(context, '/video-call');
   }
 
+  void chatScreen(BuildContext context) {
+    Navigator.pushNamed(context, "/chat");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,22 +74,22 @@ class MeetingScreen extends StatelessWidget {
                 HomeMeetingButton(
                   onPressed: createNewMeeting,
                   text: 'New Meeting',
-                  icon: Icons.videocam,
+                  icon: Icons.video_call_rounded,
                 ),
                 HomeMeetingButton(
                   onPressed: () => joinMeeting(context),
                   text: 'Join Meeting',
-                  icon: Icons.add_box_rounded,
+                  icon: Icons.handshake_rounded,
                 ),
                 HomeMeetingButton(
                   onPressed: () {},
                   text: 'Schedule',
-                  icon: Icons.calendar_today,
+                  icon: Icons.calendar_month,
                 ),
                 HomeMeetingButton(
-                  onPressed: () {},
-                  text: 'Share Screen',
-                  icon: Icons.arrow_upward_rounded,
+                  onPressed: () => chatScreen(context),
+                  text: 'Message',
+                  icon: Icons.message_rounded,
                 ),
               ],
             ),
